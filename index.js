@@ -1,6 +1,14 @@
 const express = require("express")
-const mysql = require("mysql2/promise")
+const cors = require('cors')
 require("dotenv").config()
 
-const db = require('./services/dbconnect')
+const app = express()
+const router = require("./router/routes")
 
+app.use(express.json())
+app.use(cors())
+app.use('/api' , router)
+
+app.listen(8001, ()=> {
+    console.log("SERVER STARTED AT PORT 8001")
+})
