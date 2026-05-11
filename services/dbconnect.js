@@ -17,7 +17,7 @@ async function testConnection() {
 
         const [rows] = await connection.query('SELECT 1 AS test')
 
-        console.log(rows)
+        console.debug(rows)
 
         connection.release()
     }

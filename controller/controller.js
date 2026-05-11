@@ -3,16 +3,7 @@ const { createSchool, getAllSchools, listAllSchool} = require("../queries/school
 async function addSchool(req, res) {
   try {
     const { name, address, latitude, longitude } = req.body;
-    if (
-      name == null ||
-      address == null ||
-      latitude == null ||
-      longitude == null
-    ) {
-      return res.status(400).json({
-        error: "missing fields in the request",
-      });
-    }
+    
     const data = { name, address, latitude, longitude };
 
     const result = await createSchool(data);
@@ -49,27 +40,8 @@ async function listAllSchools(req, res) {
 async function listSchools(req, res){
   try {
 
-    let latitude = req.query.latitude
-    let longitude = req.query.longitude
-
-    // validating the query
-    if(!latitude || !longitude){
-      return res.status(400).json({
-        error : "Missing latitude or longitude"
-      })
-    }
-    latitude = Number(latitude)
-    longitude = Number(longitude)
-    if(Number.isNaN(latitude)){
-      return res.status(400).json({
-        error : "Latitude must be a number"
-      })
-    }
-    if(Number.isNaN(longitude)){
-      return res.status(400).json({
-        error : "Longitude must be a number"
-      })
-    }
+    const latitude = req.query.latitude
+    const longitude = req.query.longitude
 
     const rows = await listAllSchool(latitude, longitude)
     return res.status(200).json({
