@@ -6,7 +6,7 @@ async function createSchool({
     latitude,
     longitude
 }) {
-    const sql = `INSERT INTO SCHOOL (name, address, latitude, longitude) VALUES (?, ?, ?, ?)`;
+    const sql = `INSERT INTO school (name, address, latitude, longitude) VALUES (?, ?, ?, ?)`;
     const values = [name, address, longitude, latitude]
 
     const [result] = await pool.execute(sql, values);
@@ -15,7 +15,7 @@ async function createSchool({
 }
 
 async function getAllSchools(){
-    const sql = `SELECT * FROM SCHOOL`;
+    const sql = `SELECT * FROM school`;
     const [rows] = await pool.query(sql);
     return rows;
 }
