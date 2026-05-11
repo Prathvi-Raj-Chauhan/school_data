@@ -1,4 +1,4 @@
-const { createSchool, getAllSchools } = require("../queries/schoolqueries");
+const { createSchool, getAllSchools, listAllSchool} = require("../queries/schoolqueries");
 
 async function addSchool(req, res) {
   try {
@@ -34,20 +34,57 @@ async function addSchool(req, res) {
 }
 
 async function listAllSchools(req, res) {
-    try {
-        const rows = await getAllSchools()
-        return res.status(200).json({
-            Schools : rows
-        })
-    } catch (e) {
-        return res.status(500).json({
+  try {
+      const rows = await getAllSchools()
+      return res.status(200).json({
+          Schools : rows
+      })
+  } catch (e) {
+      return res.status(500).json({
         error: "Internal server error",
         message : e.message
-    });
-    }
+      });
+  }
 }
+async function listSchools(req, res){
+  try {
 
+    let latitude = req.query.latitude
+    let longitude = req.query.longitude
+
+    // validating the query
+    if(!latitude || !longitude){
+      return res.status(400).json({
+        error : "Missing latitude or longitude"
+      })
+    }
+    latitude = Number(latitude)
+    longitude = Number(longitude)
+    if(Number.isNaN(latitude)){
+      return res.status(400).json({
+        error : "Latitude must be a number"
+      })
+    }
+    if(Number.isNaN(longitude)){
+      return res.status(400).json({
+        error : "Longitude must be a number"
+      })
+    }
+
+    const rows = await listAllSchool(latitude, longitude)
+    return res.status(200).json({
+        schools: rows
+    });
+
+  } catch (e) {
+    return res.status(500).json({
+        error: "Internal server error",
+        message : e.message
+      });
+  }
+}
 module.exports = {
     addSchool,
-    listAllSchools
+    listAllSchools,
+    listSchools
 };

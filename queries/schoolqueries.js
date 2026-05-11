@@ -20,7 +20,47 @@ async function getAllSchools(){
     return rows;
 }
 
+async function listAllSchool(
+    latitude,
+    longitude
+) {
+
+    const sql = `
+        SELECT
+            id,
+            name,
+            address,
+            latitude,
+            longitude,
+
+            (
+                6371 * ACOS(
+                    COS(RADIANS(?))
+                    * COS(RADIANS(latitude))
+                    * COS(RADIANS(longitude) - RADIANS(?))
+                    + SIN(RADIANS(?))
+                    * SIN(RADIANS(latitude))
+                )
+            ) AS distance
+
+        FROM school
+
+        ORDER BY distance ASC
+    `;
+
+    const values = [
+        latitude,
+        longitude,
+        latitude
+    ];
+
+    const [rows] = await pool.execute(sql, values);
+
+    return rows;
+}
+
 module.exports = {
     createSchool,
-    getAllSchools
+    getAllSchools,
+    listAllSchool
 }
