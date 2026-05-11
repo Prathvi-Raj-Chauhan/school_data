@@ -11,6 +11,17 @@ function validateSchool(req, res, next) {
         error: "missing fields in the request",
       });
     }
+    if (name.trim().length > 100) {
+      return res.status(400).json({
+        error: "Name cannot exceed 100 characters"
+      });
+    }
+
+    if (address.trim().length > 255) {
+      return res.status(400).json({
+        error: "Address cannot exceed 255 characters"
+      });
+    }
     if (typeof name !== "string" || name.trim().length === 0) {
       return res.status(400).json({
         error: "Invalid Name",
