@@ -11,12 +11,12 @@ function validateSchool(req, res, next) {
         error: "missing fields in the request",
       });
     }
-    if (typeof name !== "string") {
+    if (typeof name !== "string" || name.trim().length === 0) {
       return res.status(400).json({
         error: "Invalid Name",
       });
     }
-    if (typeof address !== "string") {
+    if (typeof address !== "string" || address.trim().length === 0) {
       return res.status(400).json({
         error: "Invalid address",
       });
