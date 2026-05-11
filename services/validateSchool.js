@@ -1,42 +1,54 @@
-function validateSchool(data){
-    const {
+function validateSchool(req, res, next){
+
+    try{
+        let {
         name,
         address,
         latitude,
         longitude
-    } = data;
+    } = req.body;
 
     if(typeof(name) !== "string"){
-        const error = new Error("Invalid Name")
-        error.statusCode = 400
-        throw error
+        return res.status(400).json({
+            error : "Invalid Name"
+        })
     }
     if(typeof(address) !== "string"){
-        const error = new Error("Invalid address")
-        error.statusCode = 400
-        throw error
+        return res.status(400).json({
+            error : "Invalid address"
+        })
     }
-    if (Number.isNaN(Number(latitude))) {
-        const error = new Error("Latitude must be number");
-        error.statusCode = 400
-        throw error
+    latitude = Number(latitude);
+    longitude = Number(longitude);
+    if (Number.isNaN(latitude)) {
+        return res.status(400).json({
+            error : "Latitude must be number"
+        })
     }
-    if (Number.isNaN(Number(longitude))) {
-        const error = new Error("Longitude must be number");
-        error.statusCode = 400
-        throw error
+    if (Number.isNaN(longitude)) {
+        return res.status(400).json({
+            error : "Longitude must be number"
+        })
     }
     if(latitude < -90 || latitude > 90){
-        const error = new Error("Invalid latitude values")
-        error.statusCode = 400
-        throw error
+        return res.status(400).json({
+            error : "Invalid latitude values"
+        })
     }
     if(longitude < -180 || longitude > 180){
-        const error = new Error("Invalid longitude values")
-        error.statusCode = 400
-        throw error
+        return res.status(400).json({
+            error : "Invalid latitude values"
+        })
+        
     }
 
+    req.body.latitude = latitude;
+    req.body.longitude = longitude;
+    next()}catch(e){
+        return res.status(500).json({
+            error: "Validation middleware failed"
+        });
+    }
 }
 module.exports = {
     validateSchool

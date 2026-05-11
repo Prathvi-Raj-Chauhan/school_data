@@ -1,4 +1,3 @@
-const { validateSchool } = require("../services/validateSchool");
 const { createSchool, getAllSchools } = require("../queries/schoolqueries");
 
 async function addSchool(req, res) {
@@ -15,7 +14,6 @@ async function addSchool(req, res) {
       });
     }
     const data = { name, address, latitude, longitude };
-    validateSchool(data);
 
     const result = await createSchool(data);
     await console.debug(result);
@@ -29,7 +27,8 @@ async function addSchool(req, res) {
       });
     }
     return res.status(500).json({
-        error: "Internal server error"
+        error: "Internal server error",
+        message : e.message
     });
   }
 }
